@@ -71,3 +71,58 @@ io.on("connection", (socket) => {
     console.log("Disconnect");
   });
 });
+
+app.post('/register', async function (req, res) {
+  try {
+    console.log(req.body)
+    let usuarioExistente = await realizarQuery(`SELECT mail FROM Usuarios WHERE mail='${req.body.mail}' `);
+    console.log(req.body)
+    if (usuarioExistente.length > 0) {
+      res.send({ res: "Ya existe este usuario" });
+    }
+    else {
+      realizarQuery(`
+      INSERT INTO Usuarios (nombre, mail, contrasena, foto_perfil) VALUES
+      ("${req.body.nombre}","${req.body.mail}","${req.body.contrasena}","${req.body.foto_perfil}")`)
+      res.send({ res: "Usuario agregado" })
+    }
+
+  } catch (error) {
+    console.error("Error al borrar:", error);
+    res.status(500).send({
+      res: "Error del servidor"
+    });
+  }
+})
+
+app.post('/login', async function (req, res) {
+  try {
+    if (!req.body.mail || !req.body.contrasena) {
+      return res.send({ res: "No pueden haber campos vacíos" });
+    }
+    let usuario = await realizarQuery(`SELECT * FROM Usuarios WHERE mail='${req.body.mail}' AND contrasena='${req.body.contrasena}'`);
+    if (usuario.length > 0) {
+      res.send({ res: "Login correcto", usuario: usuario[0] });
+    } else {
+      res.status(401).send({ res: "Mail o contraseña incorrectos" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ res: "Error del servidor" });
+  }
+});
+
+
+app.get('/listadoChats', function (req, res) {
+    try {
+        // 1. Buscamos los chats del usuario logueado
+        const [chats] = await db.query(
+            `SELECT Chats.id_chat, Chats.titulo, Chats.es_grupo, Chats.foto_chat 
+             FROM Chat_usuario 
+             JOIN Chats ON Chat_usuario.id_chat = Chats.id_chat 
+             WHERE Chat_usuario.mail = ?`,
+            [mail]
+        );
+  })
+}
+
