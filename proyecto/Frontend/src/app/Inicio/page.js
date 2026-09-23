@@ -8,32 +8,22 @@ export default function Inicio() {
     const [eleccion, setEleccion] = useState(false)
     const [logueado, setLogueado] = useState(false)
     const [registrado, setRegistrado] = useState(false)
-    
+
     const handleInicio = () => {
         setEleccion(true)
     }
 
-    
-    useEffect(() => {
-        fetch('http://localhost:3001/register')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setRegistrado(data.registrado);
-            });
-    }, [])
-
-     useEffect(() => {
-        fetch('http://localhost:3001/login')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setLogueado(data.logueado);
-            });
-    }, [])
-
-
     if (eleccion === false) {
+        useEffect(() => {
+            fetch('http://localhost:3001/register')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    setRegistrado(true);
+
+                });
+        }, [registrado])
+
         return (
             <>
                 <Registro
@@ -46,8 +36,16 @@ export default function Inicio() {
             </>
         )
     } else {
-
+        useEffect(() => {
+            fetch('http://localhost:3001/login')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    setLogueado(true);
+                });
+        }, [logueado])
         return (
+
             <>
                 <Login
                     mail={mail}
