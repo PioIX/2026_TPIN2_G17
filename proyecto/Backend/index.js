@@ -111,18 +111,3 @@ app.post('/login', async function (req, res) {
     res.status(500).send({ res: "Error del servidor" });
   }
 });
-
-
-app.get('/listadoChats', function (req, res) {
-    try {
-        // 1. Buscamos los chats del usuario logueado
-        const [chats] = await db.query(
-            `SELECT Chats.id_chat, Chats.titulo, Chats.es_grupo, Chats.foto_chat 
-             FROM Chat_usuario 
-             JOIN Chats ON Chat_usuario.id_chat = Chats.id_chat 
-             WHERE Chat_usuario.mail = ?`,
-            [mail]
-        );
-  })
-}
-
