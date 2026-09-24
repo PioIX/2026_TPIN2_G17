@@ -4,14 +4,21 @@ import Button from "@/components/Button";
 import Registro from "@/components/Registro";
 import Login from "@/components/Login"
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 export default function Inicio() {
     const [eleccion, setEleccion] = useState(false)
     const [logueado, setLogueado] = useState(false)
     const [registrado, setRegistrado] = useState(false)
+    const router = useRouter();
+
 
     const handleInicio = () => {
         setEleccion(true)
     }
+
+    const irAOtraPagina = () => {
+                    router.push("/otra-pagina");
+                }
 
     if (eleccion === false) {
         useEffect(() => {
@@ -51,6 +58,7 @@ export default function Inicio() {
                     mail={mail}
                     contrasena={contrasena}
                 />
+                <Button onClick={irAOtraPagina} text={"Ingresar a los Chats"} />
             </>
         )
     }

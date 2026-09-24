@@ -13,7 +13,8 @@ export default function Registro({ mail, nombre, contrasena, foto_perfil, onChan
         <hr></hr>
         <p>Ingresa tu nombre</p>
         <Input onChange={onChange} value={nombre}/>
-
+        <p>Ingresa la foto de perfil</p>
+        <Input onChange={onChange} value={foto_perfil}/>
         </>
     )
 }

@@ -102,6 +102,7 @@ app.post('/login', async function (req, res) {
     }
     let usuario = await realizarQuery(`SELECT * FROM Usuarios WHERE mail='${req.body.mail}' AND contrasena='${req.body.contrasena}'`);
     if (usuario.length > 0) {
+      req.session.user = usuario[0].mail;
       res.send({ res: "Login correcto", usuario: usuario[0] });
     } else {
       res.status(401).send({ res: "Mail o contraseña incorrectos" });
@@ -109,5 +110,125 @@ app.post('/login', async function (req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).send({ res: "Error del servidor" });
+  }
+});
+
+
+app.get('/chats', async function (req, res) {
+  try {
+    if (!req.session.user) {
+      return res.status(401).send({ res: "Usuario no registrado" });
+    }
+    let chats = await realizarQuery(`SELECT * FROM Chats`);
+
+    res.send(chats);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      res: "Error del servidor"
+    });
+  }
+});
+
+app.post('/chatIndividual', async function (req, res) {
+  try {
+    let usuarioExistente = await realizarQuery(`
+      SELECT mail FROM Usuarios
+      WHERE mail='${req.body.mail}'
+    `);
+
+    if (usuarioExistente.length === 0) {
+      return res.send({ res: "No existe este usuario" });
+    }
+
+    let chat = await realizarQuery(`
+      INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat)
+      VALUES ("Chat", false, CURDATE(), "")
+    `);
+
+    let id_chat = chat.insertId;
+
+    await realizarQuery(`
+      INSERT INTO Chat_usuario (mail, id_chat)
+      VALUES
+      ('${req.session.user}', ${id_chat}),
+      ('${req.body.mail}', ${id_chat})
+    `);
+
+    res.send({ res: "Chat creado", id_chat: id_chat });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      res: "Error del servidor"
+    });
+  }
+});
+
+
+app.post('/grupal', async function (req, res) {
+  try {
+    for (let i = 0; i < req.body.mails.length; i++) {
+      let usuarioExistente = await realizarQuery(`
+        SELECT mail FROM Usuarios WHERE mail='${req.body.mails[i]}'`);
+
+      if (usuarioExistente.length === 0) {
+        return res.send({
+          res: "No existe el usuario " + req.body.mails[i]
+        });
+      }
+    }
+
+    let chat = await realizarQuery(`
+      INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat)
+      VALUES (
+        "${req.body.titulo}",
+        true,
+        CURDATE(),
+        "${req.body.foto_chat}"
+      )
+    `);
+
+    let id_chat = chat.insertId;
+
+    await realizarQuery(`
+      INSERT INTO Chat_usuario (mail, id_chat)
+      VALUES ('${req.session.user}', ${id_chat})
+    `);
+
+    for (let i = 0; i < req.body.mails.length; i++) {
+      await realizarQuery(`
+        INSERT INTO Chat_usuario (mail, id_chat)
+        VALUES ('${req.body.mails[i]}', ${id_chat})
+      `);
+    }
+
+    res.send({
+      res: "Grupo creado",
+      id_chat: id_chat
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      res: "Error del servidor"
+    });
+  }
+});
+
+app.get('/mensajes/:id_chat', async function (req, res) {
+  try {
+    let mensajes = await realizarQuery(`
+      SELECT * FROM Mensajes WHERE id_chat = ${req.params.id_chat} ORDER BY fecha_envio ASC
+    `);
+
+    res.send(mensajes);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      res: "Error del servidor"
+    });
   }
 });
