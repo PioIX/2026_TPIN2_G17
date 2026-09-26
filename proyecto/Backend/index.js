@@ -124,7 +124,7 @@ app.get('/chats', async function (req, res) {
     if (!req.session.user) {
       return res.status(401).send({ res: "Usuario no registrado" });
     }
-    let chats = await realizarQuery(`SELECT * FROM Chats`);
+    let chats = await realizarQuery(`SELECT * FROM Chats  INNER JOIN Chat_usuario ON Chats.id_chat = Chat_usuario.id_chat WHERE Chat_usuario.mail = '${req.session.user}'`);
 
     res.send(chats);
 
@@ -236,4 +236,12 @@ app.get('/mensajes/:id_chat', async function (req, res) {
       res: "Error del servidor"
     });
   }
+});
+
+app.get('/usuario', function (req, res) {
+
+    res.send({
+        mail: req.session.user
+    });
+
 });
