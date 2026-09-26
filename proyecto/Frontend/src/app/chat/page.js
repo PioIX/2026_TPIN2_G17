@@ -85,7 +85,10 @@ export default function Chat() {
                 onChange={(e) => setTexto(e.target.value)}
             />
 
-          
+            <Button
+                text="Enviar"
+                onClick={enviarMensaje}
+            />
         </div>
     );
 }
