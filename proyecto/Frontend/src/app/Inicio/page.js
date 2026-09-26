@@ -1,66 +1,20 @@
 "use client";
 
 import Button from "@/components/Button";
-import Registro from "@/components/Registro";
-import Login from "@/components/Login"
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-export default function Inicio() {
-    const [eleccion, setEleccion] = useState(false)
-    const [logueado, setLogueado] = useState(false)
-    const [registrado, setRegistrado] = useState(false)
-    const router = useRouter();
 
+export default function Home() {
+  const router = useRouter();
 
-    const handleInicio = () => {
-        setEleccion(true)
-    }
+  return (
+    <>
+      <h1>Bienvenido</h1>
+      <p>Conéctate y chatea en tiempo real</p>
 
-    const irAOtraPagina = () => {
-                    router.push("/otra-pagina");
-                }
-
-    if (eleccion === false) {
-        useEffect(() => {
-            fetch('http://localhost:3001/register')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    setRegistrado(true);
-
-                });
-        }, [registrado])
-
-        return (
-            <>
-                <Registro
-                    nombre={nombre}
-                    contrasena={contrasena}
-                    mail={mail}
-
-                />
-                <Button onClick={handleInicio} text={"Iniciar Sesion"} />
-            </>
-        )
-    } else {
-        useEffect(() => {
-            fetch('http://localhost:3001/login')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    setLogueado(true);
-                });
-        }, [logueado])
-        return (
-
-            <>
-                <Login
-                    mail={mail}
-                    contrasena={contrasena}
-                />
-                <Button onClick={irAOtraPagina} text={"Ingresar a los Chats"} />
-            </>
-        )
-    }
+      <div>
+        <Button onClick={() => router.push("/login")} text={"Iniciar Sesión"} />
+        <Button onClick={() => router.push("/registro")} text={"Registrarse"} />
+      </div>
+    </>
+  );
 }
-

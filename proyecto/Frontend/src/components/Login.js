@@ -3,27 +3,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Registro() {
+export default function Login() {
 
-    const [nombre, setNombre] = useState("");
     const [mail, setMail] = useState("");
     const [contrasena, setContrasena] = useState("");
-    const [foto, setFoto] = useState("");
 
     const router = useRouter();
 
-    function registrarse() {
+    function iniciarSesion() {
 
-        fetch("http://localhost:4000/register", {
+        fetch("http://localhost:4000/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify({
-                nombre: nombre,
                 mail: mail,
-                contrasena: contrasena,
-                foto_perfil: foto
+                contrasena: contrasena
             })
         })
         .then(response => response.json())
@@ -31,10 +28,10 @@ export default function Registro() {
 
             console.log(data);
 
-            alert(data.res);
-
-            if (data.res === "Usuario agregado") {
-                router.push("/login");
+            if (data.res === "Login correcto") {
+                router.push("/bienvenida");
+            } else {
+                alert(data.res);
             }
 
         });
@@ -42,14 +39,7 @@ export default function Registro() {
 
     return (
         <div>
-            <h1>Registrarse</h1>
-
-            <input
-                type="text"
-                placeholder="Nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-            />
+            <h1>Iniciar sesión</h1>
 
             <input
                 type="email"
@@ -65,15 +55,8 @@ export default function Registro() {
                 onChange={(e) => setContrasena(e.target.value)}
             />
 
-            <input
-                type="text"
-                placeholder="Foto de perfil"
-                value={foto}
-                onChange={(e) => setFoto(e.target.value)}
-            />
-
-            <button onClick={registrarse}>
-                Registrarse
+            <button onClick={iniciarSesion}>
+                Iniciar sesión
             </button>
         </div>
     );

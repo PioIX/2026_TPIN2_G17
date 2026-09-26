@@ -73,22 +73,27 @@ io.on("connection", (socket) => {
 });
 
 app.post('/register', async function (req, res) {
+  let foto = req.body.foto_perfil || "foto_default.png";
   try {
     console.log(req.body)
+    if (!req.body.nombre || !req.body.mail || !req.body.contrasena) {
+      return res.send({ res: "Todos los campos son obligatorios" });
+    }
     let usuarioExistente = await realizarQuery(`SELECT mail FROM Usuarios WHERE mail='${req.body.mail}' `);
     console.log(req.body)
     if (usuarioExistente.length > 0) {
       res.send({ res: "Ya existe este usuario" });
     }
+    
     else {
       realizarQuery(`
-      INSERT INTO Usuarios (nombre, mail, contrasena, foto_perfil) VALUES
-      ("${req.body.nombre}","${req.body.mail}","${req.body.contrasena}","${req.body.foto_perfil}")`)
+      INSERT INTO Usuarios (nombre, mail, contrasena, foto) VALUES
+      ("${req.body.nombre}","${req.body.mail}","${req.body.contrasena}","${req.body.foto}")`)
       res.send({ res: "Usuario agregado" })
     }
 
   } catch (error) {
-    console.error("Error al borrar:", error);
+    console.error("Error:", error);
     res.status(500).send({
       res: "Error del servidor"
     });
@@ -100,7 +105,7 @@ app.post('/login', async function (req, res) {
     if (!req.body.mail || !req.body.contrasena) {
       return res.send({ res: "No pueden haber campos vacíos" });
     }
-    let usuario = await realizarQuery(`SELECT * FROM Usuarios WHERE mail='${req.body.mail}' AND contrasena='${req.body.contrasena}'`);
+    let usuario = await realizarQuery(`SELECT mail, nombre, foto_perfil FROM Usuarios WHERE mail='${req.body.mail}' AND contrasena='${req.body.contrasena}'`);
     if (usuario.length > 0) {
       req.session.user = usuario[0].mail;
       res.send({ res: "Login correcto", usuario: usuario[0] });
