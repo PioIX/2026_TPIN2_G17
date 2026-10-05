@@ -1,0 +1,27 @@
+.contenedor {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.acciones {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.modal {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    min-width: 280px;
+}
+
+.modal h2 {
+    margin-bottom: 12px;
+}
+
+.error {
+    color: #d32f2f;
+    font-size: 14px;
+}

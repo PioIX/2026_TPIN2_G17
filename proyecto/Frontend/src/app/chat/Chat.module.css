@@ -1,0 +1,39 @@
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.volver {
+    color: #1976d2;
+    margin-bottom: 8px;
+}
+
+.mensajes {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    background: #efeae2;
+    border-radius: 8px;
+}
+
+.formulario {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    margin-top: 12px;
+}
+
+.formulario > div:first-child {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.formulario button {
+    width: auto;
+    margin-top: 0;
+    padding: 8px 16px;
+}

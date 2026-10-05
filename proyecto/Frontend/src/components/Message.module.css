@@ -1,0 +1,19 @@
+.fila_enviado { display: flex; justify-content: flex-end; }
+.fila_recibido { display: flex; justify-content: flex-start; }
+
+.enviado, .recibido {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    word-break: break-word;
+}
+
+.enviado { background: #d9fdd3; }
+.recibido { background: #fff; border: 1px solid #e5e5e5; }
+
+.autor {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1976d2;
+}

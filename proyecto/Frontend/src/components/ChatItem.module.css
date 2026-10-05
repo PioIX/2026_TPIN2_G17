@@ -1,0 +1,33 @@
+.item {
+    list-style: none;
+    border-bottom: 1px solid #eee;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.link:hover {
+    background: #f5f5f5;
+}
+
+.foto {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.titulo {
+    font-weight: bold;
+}
+
+.detalle {
+    font-size: 13px;
+    color: #757575;
+}
