@@ -44,17 +44,21 @@ CREATE TABLE Mensajes (
     FOREIGN KEY (id_chat) REFERENCES Chats(id_chat)
 );
 
-INSERT INTO Usuarios (mail, nombre, contrasena, foto_perfil) VALUES ('a@pioix.edu.ar', 'Admin', '123', '');
-INSERT INTO Usuarios (mail, nombre, contrasena, foto_perfil) VALUES ('p@pioix.edu.ar', 'Profes', '123', '');
+INSERT INTO Usuarios (mail, nombre, contrasena, foto_perfil) VALUES 
+    ('a@pioix.edu.ar', 'Admin', '123', 'admin.jpg'),
+    ('p@pioix.edu.ar', 'Profes', '123', '');
 
-INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES ('Grupo de estudios', TRUE, '2026-03-01', '');
-INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES ('Chat individual', FALSE, '2026-03-02', '');
+INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES 
+    ('Grupo de estudios', TRUE, '2026-03-01', ''),
+    ('Chat individual', FALSE, '2026-03-02', '');
 
-INSERT INTO Chat_usuario (mail, id_chat) VALUES ('a@pioix.edu.ar', 1);
-INSERT INTO Chat_usuario (mail, id_chat) VALUES ('p@pioix.edu.ar', 1);
-INSERT INTO Chat_usuario (mail, id_chat) VALUES ('a@pioix.edu.ar', 2);
-INSERT INTO Chat_usuario (mail, id_chat) VALUES ('p@pioix.edu.ar', 2);
+INSERT INTO Chat_usuario (mail, id_chat) VALUES 
+    ('a@pioix.edu.ar', 1),
+    ('p@pioix.edu.ar', 1),
+    ('a@pioix.edu.ar', 2),
+    ('p@pioix.edu.ar', 2);
 
-INSERT INTO Mensajes (contenido, fecha_envio, id_chat, mail) VALUES ('Hola, como estan?', '2026-03-01', 1, 'a@pioix.edu.ar');
-INSERT INTO Mensajes (contenido, fecha_envio, id_chat, mail) VALUES ('Todo bien!', '2026-03-01', 1, 'p@pioix.edu.ar');
-INSERT INTO Mensajes (contenido, fecha_envio, id_chat, mail) VALUES ('Hola profe', '2026-03-02', 2, 'a@pioix.edu.ar');
+INSERT INTO Mensajes (contenido, fecha_envio, id_chat, mail) VALUES 
+    ('Hola, como estan?', '2026-03-01', 1, 'a@pioix.edu.ar'),
+    ('Todo bien!', '2026-03-01', 1, 'p@pioix.edu.ar'),
+    ('Hola profe', '2026-03-02', 2, 'a@pioix.edu.ar');
