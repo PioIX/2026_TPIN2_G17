@@ -222,20 +222,25 @@ app.post("/chatIndividual", async function (req, res) {
       return res.send({ res: "Ya tenés un chat con este usuario" });
     }
 
-    const chat = await realizarQuery(
-      "INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES (?, false, CURDATE(), '')",
-      ["Chat individual"]
-    );
+  const chat = await realizarQuery(
+    "INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES (?, 0, NOW(), '')",
+    ["Chat individual"]
+  );
 
-    await realizarQuery(
-      "INSERT INTO Chat_usuario (mail, id_chat) VALUES (?, ?), (?, ?)",
-      [req.session.user, chat.insertId, mailOtro, chat.insertId]
-    );
+   await realizarQuery(
+  "INSERT INTO Chat_usuario (mail, id_chat) VALUES (?, ?)",
+  [req.session.user, chat.insertId]
+);
+
+await realizarQuery(
+  "INSERT INTO Chat_usuario (mail, id_chat) VALUES (?, ?)",
+  [mailOtro, chat.insertId]
+);
 
     res.send({ res: "Chat creado", id_chat: chat.insertId });
   } catch (error) {
-    console.error(error);
-    res.status(500).send({ res: "Error del servidor" });
+    console.error("ERROR DETALLADO EN CHAT INDIVIDUAL:", error);
+    res.status(500).send({ res: "Error del servidor", detalle: error.message });
   }
 });
 
@@ -269,7 +274,7 @@ app.post("/grupal", async function (req, res) {
     }
 
     const chat = await realizarQuery(
-      "INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES (?, true, CURDATE(), ?)",
+      "INSERT INTO Chats (titulo, es_grupo, fecha_creacion, foto_chat) VALUES (?, true, NOW(), ?)",
       [titulo, foto_chat]
     );
 

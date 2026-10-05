@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import styles from "../Auth.module.css";
+import styles from "../registro/registro.module.css";
 
 export default function LoginPage() {
     const router = useRouter();

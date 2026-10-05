@@ -1,20 +1,28 @@
 "use client";
 
+import { useEffect } from "react";
+import Link from "next/link";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
+import styles from "../registro/registro.module.css";
 
 export default function Home() {
-  const router = useRouter();
+  useEffect(() => {
+    document.title = "Pio Chat - Inicio";
+  }, []);
 
   return (
-    <>
-      <h1>Bienvenido</h1>
-      <p>Conéctate y chatea en tiempo real</p>
+    <div className={styles.contenedor}>
+      <div className={styles.tarjeta}>
+        <h1>Bienvenido</h1>
+        <p>Conéctate y chatea en tiempo real</p>
 
-      <div>
-        <Button onClick={() => router.push("/login")} text={"Iniciar Sesión"} />
-        <Button onClick={() => router.push("/registro")} text={"Registrarse"} />
+        <Link href="/login">
+          <Button text="Iniciar sesión" />
+        </Link>
+        <Link href="/registro">
+          <Button text="Registrarse" />
+        </Link>
       </div>
-    </>
+    </div>
   );
 }
